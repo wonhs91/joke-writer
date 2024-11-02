@@ -10,3 +10,4 @@ langchain-ollama
 notebook
 tavily-python
 wikipedia
+fastapi
