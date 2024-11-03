@@ -10,8 +10,7 @@ from operator import add
 import json
 import logging
 
-creative_llm = ChatOllama(model='llama3.2', temperature=2)
-agentic_llm = ChatOllama(model='llama3.2', temperature=0.1)
+llm = ChatOllama(model='llama3.2')
 # llm = ChatGroq(model="llama-3.1-70b-versatile")
 
 
