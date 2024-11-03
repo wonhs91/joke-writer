@@ -1,1 +1,4 @@
 .env
+agent/__pycache__/
+service/__pycache__/
+test.ipynb
