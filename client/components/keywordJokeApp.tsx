@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Loader2, Bot } from 'lucide-react'
 import KeywordInput from './keywordInput';
 import KeywordAssociationsCard from './KeywordAssociationsCard';
 import { Button } from '@/components/ui/button';
@@ -85,6 +86,13 @@ const KeywordJokeApp: React.FC = () => {
     });
   };
 
+  const handleCustomAssociationAdd = async (keyword: string, association: string): Promise<void> => {
+    setKeywordsAssociations(prevAssociations => ({
+      ...prevAssociations,
+      [keyword]: prevAssociations[keyword] ? [...prevAssociations[keyword], association] : [association]
+    }));
+  }
+
   const handleAssociationsSubmit = async (): Promise<void> => {
     setLoading(true);
     try {
@@ -133,6 +141,9 @@ const KeywordJokeApp: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Associated Words</CardTitle>
+            <CardDescription>
+              Select associations for each keyword to generate a joke
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {Object.entries(keywordsAssociations).map(([keyword, associations]) => (
@@ -143,13 +154,21 @@ const KeywordJokeApp: React.FC = () => {
                 selectedAssociation={selectedAssociations?.[keyword] !== undefined ? selectedAssociations[keyword] : ""}
                 onAssociationSelect={handleWordSelect}
                 isLoading={loading}
+                onAddCustomAssociation={handleCustomAssociationAdd}
               />
             ))}
             <Button
-              className="mt-4"
+              className="w-full mt-4"
               onClick={handleAssociationsSubmit}
-              disabled={loading}
-            />
+              disabled={loading || Object.keys(selectedAssociations).length !== Object.keys(keywordsAssociations).length} 
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              ) : (
+                <Bot className="h-4 w-4 mr-2" />
+              )}
+              Generate Joke
+            </Button>
           </CardContent>
         </Card>
       )}
