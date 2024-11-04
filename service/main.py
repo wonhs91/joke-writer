@@ -64,7 +64,6 @@ async def write_joke(thread_id: str, joke_materials: Dict[str, str]):
 
   
   thread_data = thread_store.get(thread_id, None)
-  # test_config =  {'configurable': {'thread_id': 1}}
   
   if not thread_data:
     raise HTTPException(status_code=400, detail="Invalid thread id.")
