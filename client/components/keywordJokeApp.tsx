@@ -6,23 +6,27 @@ import KeywordInput from './keywordInput';
 import KeywordAssociationsCard from './KeywordAssociationsCard';
 import { Button } from '@/components/ui/button';
 
-
-
-interface Associations {
-  keyword: string;
-  associations: string[];
-}
-
 interface KeywordAssociations {
   [key: string]: string[];
 }
 
 interface AssociatedWordsResponse {
   thread_id: string;
-  agent_response: { keywords: string[], keywords_associations: Associations[] };
+  keys_associations: { [key: string]: string[] };
+}
+
+interface KyesAssociations {
+  keys_associations: { [keyword: string]: string[]}
+}
+
+interface JokeMaterials {
+  materials: { [keyword: string]: string}
 }
 
 interface JokeResponse {
+  keywords?: string[];
+  keywords_associations?: KyesAssociations
+  joke_material: JokeMaterials
   joke: string;
 }
 
@@ -31,9 +35,8 @@ interface JokeResponse {
 
 const KeywordJokeApp: React.FC = () => {
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [keywordsAssociations, setKeywordsAssociations] = useState<Associations[]>([]);
-  const [selectedWord, setSelectedWord] = useState<string>('');
-  const [selectedKeywordsAssociations, setSelectedKeywordsAssociations] = useState<KeywordAssociations>({})
+  const [keywordsAssociations, setKeywordsAssociations] = useState<KeywordAssociations>({});
+  const [selectedAssociations, setSelectedAssociations] = useState<{ [key: string]: string}>({})
 
   const [joke, setJoke] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,45 +55,45 @@ const KeywordJokeApp: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/joke-writer/associations', {
+      const request = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ keywords })
-      });
-      console.log(`this is public api url: ${process.env.NEXT_PUBLIC_API_URL}`);
+      }
+      const response = await fetch('http://localhost:8000/api/joke-writer/associations', request);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data: AssociatedWordsResponse = await response.json();
-      setKeywordsAssociations(data.agent_response.keywords_associations);
+      setKeywordsAssociations(data.keys_associations);
       setThreadId(data.thread_id);
       setJoke('');
-      setSelectedWord('');
-      setSelectedKeywordsAssociations({});
+      setSelectedAssociations({});
     } catch (error) {
       console.error('Error fetching associated words:', error);
-      setKeywordsAssociations([]);
+      setKeywordsAssociations({});
     } finally {
       setLoading(false);
     }
   };
 
   const handleWordSelect = async (keyword: string, association: string): Promise<void> => {
-    setSelectedKeywordsAssociations({
-      ...selectedKeywordsAssociations,
-      keyword: [...selectedKeywordsAssociations[keyword], association]
+    setSelectedAssociations({
+      ...selectedAssociations,
+      [keyword]: association
     });
   };
 
   const handleAssociationsSubmit = async (): Promise<void> => {
     setLoading(true);
     try {
-      const response = await fetch(`/joke-writer/joke/${threadId}`, {
+      const request = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selectedKeywordsAssociations })
-      });
+        body: JSON.stringify(selectedAssociations)
+      }
+      const response = await fetch(`http://localhost:8000/api/joke-writer/joke/${threadId}`, request);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -126,18 +129,18 @@ const KeywordJokeApp: React.FC = () => {
         </CardContent>
       </Card>
 
-      {keywordsAssociations.length > 0 && (
+      {Object.keys(keywordsAssociations).length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Associated Words</CardTitle>
           </CardHeader>
           <CardContent>
-            {keywordsAssociations.map(keywordAssociation => (
+            {Object.entries(keywordsAssociations).map(([keyword, associations]) => (
               <KeywordAssociationsCard
-                key={keywordAssociation.keyword}
-                keyword={keywordAssociation.keyword}
-                associations={keywordAssociation.associations}
-                selectedAssociations={selectedKeywordsAssociations[keywordAssociation.keyword]}
+                key={keyword}
+                keyword={keyword}
+                associations={associations}
+                selectedAssociation={selectedAssociations?.[keyword] !== undefined ? selectedAssociations[keyword] : ""}
                 onAssociationSelect={handleWordSelect}
                 isLoading={loading}
               />

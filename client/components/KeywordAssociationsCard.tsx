@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -5,7 +7,7 @@ import { Button } from '@/components/ui/button';
 interface KyewordAssociationsCardProps {
   keyword: string
   associations: string[];
-  selectedAssociations: string[];
+  selectedAssociation: string;
   isLoading: boolean;
   onAssociationSelect: (keyword: string, association: string) => void;
 }
@@ -13,7 +15,7 @@ interface KyewordAssociationsCardProps {
 const KeywordAssociationsCard: React.FC<KyewordAssociationsCardProps> = ({
   keyword,
   associations,
-  selectedAssociations,
+  selectedAssociation,
   isLoading,
   onAssociationSelect
 }) => {
@@ -25,7 +27,7 @@ const KeywordAssociationsCard: React.FC<KyewordAssociationsCardProps> = ({
     {associations.map((association: string) => (
       <Button
         key={association}
-        variant={selectedAssociations.includes(association) ? "default" : "outline"}
+        variant={selectedAssociation == association ? "default" : "outline"}
         onClick={() => onAssociationSelect(keyword, association)}
         disabled={isLoading}
       >

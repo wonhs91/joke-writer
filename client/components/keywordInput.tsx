@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { Search, Loader2, AlertCircle, X } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -76,6 +78,7 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
       <div className="space-y-2">
         <div className="flex gap-2">
           <Input
+            id="keyword-input"
             type="text"
             value={inputValue}
             onChange={handleInputChange}
