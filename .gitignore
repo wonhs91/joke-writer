@@ -1,5 +1,6 @@
 .env
 .vscode/
 agent/__pycache__/
+service/agent/__pycache__/
 service/__pycache__/
 test.ipynb
