@@ -3,8 +3,8 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
-from llm_model import llm
-from state import OverallState
+from agent.llm_model import llm
+from agent.state import OverallState
 
 def joke_creator(state: OverallState):
   sys_msg = """
@@ -49,7 +49,7 @@ agent = builder.compile(memory)
 
 # %% Python Run Test
 
-from state import JokeMaterials
+from agent.state import JokeMaterials
 
 def main():
   # Draw Graph

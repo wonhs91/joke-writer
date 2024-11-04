@@ -2,6 +2,7 @@ from typing import Dict, List, Annotated
 from typing_extensions import TypedDict
 from pydantic import BaseModel, Field, field_validator
 import json
+import ast
 
 class JokeMaterials(BaseModel):
   materials: Dict[str, str] = Field(default_factory=dict,
@@ -10,18 +11,21 @@ class JokeMaterials(BaseModel):
 class KeysAssociations(BaseModel):
   """Please use this Model to store the keyword and the associations"""
   keys_associations: Dict[str, List[str]] = Field(
-    description="Return a dictionary where the key is the keyword, and the value is a list of associations, excluding headers.",
+    description="Return a dictionary where the key is the keyword or a key phrase, and the value is a list of associations, excluding headers.",
     default_factory={}
     )
   
   @field_validator('keys_associations', mode="before")
-  def check_associations(cls, associations):
-    if isinstance(associations, str):
-      try:
-        associations = json.loads(associations)
-      except Exception as e:
-        raise ValueError("association is not a dict, nor a string of dict")
-    return associations
+  def check_associations(cls, value):
+    try:
+      if isinstance(value, str):
+        value = ast.literal_eval(value)
+      elif isinstance(value, dict) and any(isinstance(v, str) for v in value.values()):
+        value = {k: ast.literal_eval(v) if isinstance(v, str) else v for k, v in value.items()}
+    except Exception as e:
+      raise ValueError("association is not a dict, nor a string of dict")
+    
+    return value
   
   class Config:
     json_schema_extra  = {

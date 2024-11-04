@@ -1,6 +1,6 @@
+from .association_agent import agent as association_agent
 from .joke_agent import agent as joke_agent
-from .association_agent import association_agent
-from state import JokeMaterials, KeysAssociations
+from agent.state import JokeMaterials, KeysAssociations
 
-__all__ = ['joke_agent', 'association_agent', 'JokeMaterials', 'KeysAssociations']
+__all__ = ['association_agent', 'joke_agent', 'JokeMaterials', 'KeysAssociations']
 

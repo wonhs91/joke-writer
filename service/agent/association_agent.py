@@ -6,24 +6,28 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 import logging
 
-from llm_model import llm
-from state import OverallState, KeysAssociations
+from agent.llm_model import llm
+from agent.state import OverallState, KeysAssociations
 
 def associations_generator(state):
   
   # 1. Get Associations from LLM
   sys_msg = """
-  You are a joke-writing assistant. Given a keyword, brainstorm related topics to inspire humor. Start the response with "Keyword: {user_given_keyword}" where {user_given_keyword} is the input keyword, then list relevant associations directly, excluding headers.
+  You are a joke-writing assistant.
+  Given a keyword, brainstorm related topics to inspire humor.
+  Start the response with "Keyword: "KEYWORD: [USER_GIVEN_KEYWORD]" where [USER_GIVEN_KEYWORD] is the input keyword, followed by a list of associations.
 
   Example:
-  For the keyword “cat,” the response should be:
-
-  Keyword: cat
-  - Garfield
-  - veterinary clinics
-  - nine lives
-  - scratching post
-  - cats and cucumbers
+  For the keyword “baby oil” the response should be:
+  ```
+  keyword: baby oil
+  
+  - slippery floors    
+  - diaper changes
+  - greasy skin
+  - cooking methods
+  - messy kitchens
+  ```
   
   Only list associations without any headers.
   """
