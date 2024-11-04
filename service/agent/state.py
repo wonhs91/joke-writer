@@ -9,9 +9,12 @@ class JokeMaterials(BaseModel):
                                     description="key is the keyword, and value is the associated material")
   
 class KeysAssociations(BaseModel):
-  """Please use this Model to store the keyword and the associations"""
+  """Use the KeysAssociations model to generate structured output from the keyword and its associations."""
   keys_associations: Dict[str, List[str]] = Field(
-    description="Return a dictionary where the key is the keyword or a key phrase, and the value is a list of associations, excluding headers.",
+    description="""Follow this format:
+      Key: The keyword (e.g., "cat") is used as the dictionary key.
+      Value: The list of associations, each association item beginning with - should be added as a string in the list, excluding the - symbol.
+    """,
     default_factory={}
     )
   
@@ -31,10 +34,7 @@ class KeysAssociations(BaseModel):
     json_schema_extra  = {
       "example": {
         "keys_associations": {
-          "baby oil": ["'Oil slick' comments (comparing someone's skin to being too shiny or greasy)"
-                       "'Slick' as a term for someone trying to be smooth or charming",
-                       "Tanning beds", "Smooth", "sleek",
-                       "Baby oil in cooking or baking (a humorous twist on using it for skin care)"]
+          "cat": ["cats playing the piano", "cat owners dressing their pets", "feline hairballs", "catnip obsession", "cat cafes"]
         }
       },
       "example 2": {
