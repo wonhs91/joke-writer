@@ -66,7 +66,7 @@ builder.add_conditional_edges(START, send_generate_associations)
 builder.add_edge('associations_generator', END)
 
 memory = MemorySaver()
-agent = builder.compile(checkpointer=memory)
+agent = builder.compile()
 
 
 # %%

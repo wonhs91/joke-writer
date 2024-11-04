@@ -101,7 +101,7 @@ const KeywordJokeApp: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedAssociations)
       }
-      const response = await fetch(`http://localhost:8000/api/joke-writer/joke/${threadId}`, request);
+      const response = await fetch(`http://localhost:8000/api/joke-writer/joke`, request);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

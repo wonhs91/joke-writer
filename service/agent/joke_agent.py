@@ -44,7 +44,7 @@ builder.add_edge(START, 'joke_creator')
 builder.add_edge('joke_creator', END)
 
 memory = MemorySaver()
-agent = builder.compile(memory)
+agent = builder.compile()
 
 
 # %% Python Run Test
