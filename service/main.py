@@ -26,14 +26,12 @@ class ThreadData(BaseModel):
 
 thread_store = defaultdict(Dict[str, ThreadData])
 
-class KeywordsReq(BaseModel):
+class associationsReqBody(BaseModel):
   keywords: list[str]
   
 @app.post("/api/joke-writer/associations")
-async def joke_writer(keywords: list[str]):
-  state = {
-    'keywords': keywords
-  }
+async def joke_writer(req_body: associationsReqBody):
+  state = req_body.model_dump()
   
   thread_id = str(uuid.uuid4())
   config = {'configurable': {'thread_id': thread_id}}
@@ -52,10 +50,9 @@ async def joke_writer(keywords: list[str]):
 
   response = {"thread_id": thread_id }
   response.update(return_state['keywords_associations'])
-  
   return response
 
-@app.post("/joke-writer/joke/{thread_id}")
+@app.post("/api/joke-writer/joke/{thread_id}")
 async def write_joke(thread_id: str, joke_materials: Dict[str, str]):
   
   try:
@@ -65,8 +62,10 @@ async def write_joke(thread_id: str, joke_materials: Dict[str, str]):
   except Exception as e:
     raise HTTPException(status_code=400, detail="Invalid joke materials. Make sure to be in the format {'keyword': 'association'}.")
 
-  # config = {'configurable': {'thread_id': thread_id}}
+  
   thread_data = thread_store.get(thread_id, None)
+  # test_config =  {'configurable': {'thread_id': 1}}
+  
   if not thread_data:
     raise HTTPException(status_code=400, detail="Invalid thread id.")
   
