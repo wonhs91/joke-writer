@@ -41,7 +41,6 @@ const KeywordJokeApp: React.FC = () => {
 
   const [joke, setJoke] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [threadId, setThreadId] = useState<string>('');
 
   const handleAddKeyword = (keyword: string): void => {
     setKeywords([...keywords, keyword]);
@@ -68,7 +67,6 @@ const KeywordJokeApp: React.FC = () => {
 
       const data: AssociatedWordsResponse = await response.json();
       setKeywordsAssociations(data.keys_associations);
-      setThreadId(data.thread_id);
       setJoke('');
       setSelectedAssociations({});
     } catch (error) {
@@ -123,7 +121,7 @@ const KeywordJokeApp: React.FC = () => {
         <CardHeader>
           <CardTitle>Keyword to Joke Generator</CardTitle>
           <CardDescription>
-            Enter multiple keywords to find associated words and generate jokes
+            Enter two or more keywords to find associated words and generate jokes
           </CardDescription>
         </CardHeader>
         <CardContent>

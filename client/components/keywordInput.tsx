@@ -125,7 +125,7 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
       {keywords.length > 0 && (
         <Button 
           onClick={onSubmit}
-          disabled={isLoading}
+          disabled={isLoading || keywords.length < 2}
           className="w-full"
         >
           {isLoading ? (

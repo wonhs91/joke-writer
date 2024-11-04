@@ -3,4 +3,4 @@ from langchain_groq import ChatGroq
 
 
 # llm = ChatOllama(model='llama3.2')
-llm = ChatGroq(model="gemma2-9b-it")
+llm = ChatGroq(model="llama-3.1-8b-instant")

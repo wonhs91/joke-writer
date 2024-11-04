@@ -8,25 +8,25 @@ from agent.state import OverallState
 
 def joke_creator(state: OverallState):
   sys_msg = """
-  You are a joke-writing assistant. Your task is to create a funny joke using two keywords and their given associations. Follow these steps:
+  You are a joke-writing assistant. Your task is to create a funny joke using two or more keywords and their given associations. Follow these steps:
 
   Understand the Keywords and Associations: Consider each keyword and its association, focusing on any traits, quirks, or clichés they suggest.
 
-  Find a Humorous Connection: Look for an unexpected or clever link between the two concepts, using contrast or wordplay to add humor.
+  Find a Humorous Connection: Look for an unexpected or clever link between the two or more  concepts, using contrast or wordplay to add humor.
 
-  Write a Concise Joke: Create a joke in one or two sentences, using the keywords and their associations for a clear setup and punchline.
+  Write a Concise Joke: Create a joke in one to three sentences, using the keywords and their associations for a clear setup and punchline.
 
   Example:
 
-  Keyword: "Yoga" Association: [flexibility]
-  Keyword: "Wi-Fi" Associatiot: [connection strength]
+  Keyword: "Yoga" // Association: "flexibility"
+  Keyword: "Wi-Fi" // Associatiot: "connection strength"
   Joke: “Why did the yoga instructor break up with their Wi-Fi? Because it just couldn’t hold a strong connection!”
   Use this format to make a joke for the keywords and associations provided.
   """
 
   req = ""
   for keyword in state['joke_material'].materials.keys():
-    req += f"Keyword: {keyword} Association: {state['joke_material'].materials[keyword]}\n"
+    req += f"""Keyword: "{keyword}" // Association: "{state['joke_material'].materials[keyword]}"\n"""
     
   joke = llm.invoke([
     SystemMessage(sys_msg),

@@ -18,15 +18,15 @@ def associations_generator(state):
   Start the response with "Keyword: "KEYWORD: [USER_GIVEN_KEYWORD]" where [USER_GIVEN_KEYWORD] is the input keyword, followed by a list of associations.
 
   Example:
-  For the keyword “baby oil” the response should be:
+  For the keyword “cat” the response should be:
   ```
-  keyword: baby oil
+  keyword: cat
   
-  - slippery floors    
-  - diaper changes
-  - greasy skin
-  - cooking methods
-  - messy kitchens
+  - cats playing the piano 
+  - cat owners dressing their pets 
+  - feline hairballs 
+  - catnip obsession 
+  - cat cafes 
   ```
   
   Only list associations without any headers.
