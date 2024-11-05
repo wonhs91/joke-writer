@@ -60,7 +60,7 @@ const KeywordJokeApp: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ keywords })
       }
-      const response = await fetch('http://localhost:8000/api/joke-writer/associations', request);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/joke-writer/associations`, request);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -99,7 +99,7 @@ const KeywordJokeApp: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedAssociations)
       }
-      const response = await fetch(`http://localhost:8000/api/joke-writer/joke`, request);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/joke-writer/joke`, request);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
