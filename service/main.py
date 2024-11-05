@@ -6,6 +6,7 @@ from typing import Dict
 import logging
 import uuid
 from collections import defaultdict
+from mangum import Mangum
 
 from agent import association_agent, joke_agent, KeysAssociations, JokeMaterials
 
@@ -17,6 +18,7 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
+handler = Mangum(app)
 
 class ThreadData(BaseModel):
   config: dict = {}
@@ -29,6 +31,10 @@ thread_store = defaultdict(Dict[str, ThreadData])
 class associationsReqBody(BaseModel):
   keywords: list[str]
   
+@app.get("/")
+async def get():
+  return {"message": "Welcome to the Joke Writer API"}
+
 @app.post("/api/joke-writer/associations")
 async def joke_writer(req_body: associationsReqBody):
   state = req_body.model_dump()
